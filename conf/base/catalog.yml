@@ -1,0 +1,31 @@
+﻿train_raw:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/train.csv
+  load_args:
+    parse_dates:
+      - datetime
+
+model_features:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/model_features.csv
+  load_args:
+    parse_dates:
+      - datetime
+  save_args:
+    index: false
+
+evaluation_metrics:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/validation_metrics.csv
+  save_args:
+    index: false
+
+validation_predictions:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/validation_predictions.csv
+  save_args:
+    index: false
+
+trained_model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/catboost_model.pkl

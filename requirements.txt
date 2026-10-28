@@ -1,0 +1,11 @@
+﻿kedro~=1.7.0
+kedro-datasets[pandas-csvdataset,pickle-pickledataset]
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.5
+catboost
+lightgbm
+pytest
+pytest-cov
+pytest-mock
+ruff

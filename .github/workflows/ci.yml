@@ -1,0 +1,43 @@
+﻿name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quality-and-pipeline:
+    runs-on: ubuntu-latest
+    env:
+      KEDRO_DISABLE_TELEMETRY: "true"
+      DO_NOT_TRACK: "1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install -e . --no-deps
+
+      - name: Ruff lint
+        run: python -m ruff check src tests scripts
+
+      - name: Ruff format check
+        run: python -m ruff format --check src tests scripts
+
+      - name: Automated tests
+        run: python -m pytest tests -q -p no:cacheprovider
+
+      - name: Create synthetic data for pipeline smoke test
+        run: python scripts/create_smoke_data.py
+
+      - name: Run Kedro pipeline
+        run: kedro run
